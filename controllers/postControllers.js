@@ -45,7 +45,7 @@ const createPost = asyncHandler(async (req, res) => {
     const { title, content } = req.body;
     let isPublic = false;
     if ("isPublic" in req.body) {
-      isPublic = req.body.public;
+      isPublic = req.body.isPublic;
     }
     const userId = req.user.id;
     const post = await Post.create({

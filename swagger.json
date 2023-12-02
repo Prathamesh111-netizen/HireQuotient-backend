@@ -1,372 +1,699 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "version": "1.0.0",
-      "title": "Hire Quotient backend",
-      "description": "API for user authentication, registration, and profile management"
-    },
-    "basePath": "/api",
-    "schemes": ["http", "https"],
-    "securityDefinitions": {
-      "BearerAuth": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header"
-      }
-    },
-    "paths": {
-      "/users/refresh": {
-        "get": {
-          "summary": "Obtain new access tokens using refresh tokens",
-          "tags": ["Authentication"],
-          "parameters": [
-            {
-              "name": "token",
-              "in": "body",
-              "description": "Refresh token",
-              "required": true,
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "token": { "type": "string" },
-                  "email": { "type": "string" }
-                }
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "New access token obtained successfully",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "success": { "type": "boolean", "example": true },
-                  "accessToken": { "type": "string" }
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid refresh token",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "success": { "type": "boolean", "example": false },
-                  "message": { "type": "string" }
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Hire Quotient backend",
+    "description": "API for user authentication, registration, and profile management"
+  },
+  "basePath": "/api",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "BearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/users/refresh": {
+      "get": {
+        "summary": "Obtain new access tokens using refresh tokens",
+        "tags": [
+          "Authentication"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "body",
+            "description": "Refresh token",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
                 }
               }
             }
           }
-        }
-      },
-      "/users/login": {
-        "post": {
-          "summary": "Authenticate user and get token",
-          "tags": ["Authentication"],
-          "parameters": [
-            {
-              "name": "body",
-              "in": "body",
-              "description": "User credentials",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/UserCredentials"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "User authenticated successfully",
-              "schema": {
-                "$ref": "#/definitions/AuthUserResponse"
-              }
-            },
-            "401": {
-              "description": "Invalid credentials",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": { "type": "string" }
+        ],
+        "responses": {
+          "200": {
+            "description": "New access token obtained successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "accessToken": {
+                  "type": "string"
                 }
               }
             }
-          }
-        }
-      },
-      "/users": {
-        "post": {
-          "summary": "Register a new user",
-          "tags": ["Authentication"],
-          "parameters": [
-            {
-              "name": "body",
-              "in": "body",
-              "description": "New user details",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/RegisterUserRequest"
-              }
-            }
-          ],
-          "responses": {
-            "201": {
-              "description": "User registered successfully",
-              "schema": {
-                "$ref": "#/definitions/AuthUserResponse"
-              }
-            },
-            "400": {
-              "description": "Email already registered",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": { "type": "string" }
+          },
+          "400": {
+            "description": "Invalid refresh token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "message": {
+                  "type": "string"
                 }
               }
             }
-          }
-        }
-      },
-      "/users/profile": {
-        "get": {
-          "summary": "Get data for an authenticated user",
-          "tags": ["User Profile"],
-          "security": [{ "BearerAuth": [] }],
-          "responses": {
-            "200": {
-              "description": "User profile retrieved successfully",
-              "schema": {
-                "$ref": "#/definitions/UserProfileResponse"
-              }
-            },
-            "400": {
-              "description": "User not authorized to view this page",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": { "type": "string" }
-                }
-              }
-            }
-          }
-        },
-        "put": {
-          "summary": "Update data for an authenticated user",
-          "tags": ["User Profile"],
-          "security": [{ "BearerAuth": [] }],
-          "parameters": [
-            {
-              "name": "body",
-              "in": "body",
-              "description": "Updated user data",
-              "required": true,
-              "schema": {
-                "$ref": "#/definitions/UpdateUserProfileRequest"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "User profile updated successfully",
-              "schema": {
-                "$ref": "#/definitions/AuthUserResponse"
-              }
-            },
-            "400": {
-              "description": "User not found",
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "message": { "type": "string" }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/posts": {
-        "get": {
-          "tags": ["Posts"],
-          "summary": "Get all the users' posts",
-          "description": "Returns a list of posts created by the user",
-          "operationId": "getPosts",
-          "security": [{"BearerAuth": []}],
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "schema": {
-                "type": "array",
-                "items": {"$ref": "#/definitions/Post"}
-              }
-            },
-            "400": {"description": "Error fetching posts"}
-          }
-        },
-        "post": {
-          "tags": ["Posts"],
-          "summary": "Create a new post",
-          "description": "Creates a new post",
-          "operationId": "createPost",
-          "security": [{"BearerAuth": []}],
-          "parameters": [
-            {"name": "body", "in": "body", "required": true, "schema": {"$ref": "#/definitions/PostCreate"}}
-          ],
-          "responses": {
-            "201": {
-              "description": "Post created successfully",
-              "schema": {"$ref": "#/definitions/Post"}
-            },
-            "400": {"description": "Error creating post"}
-          }
-        }
-      },
-      "/posts/{id}": {
-        "get": {
-          "tags": ["Posts"],
-          "summary": "Get details of a single post",
-          "description": "Returns details of a single post",
-          "operationId": "getPostDetails",
-          "security": [{"BearerAuth": []}],
-          "parameters": [
-            {"name": "id", "in": "path", "required": true, "type": "string"}
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "schema": {"$ref": "#/definitions/Post"}
-            },
-            "400": {"description": "Error fetching post"},
-            "401": {"description": "Not authorized to access this post"}
-          }
-        },
-        "put": {
-          "tags": ["Posts"],
-          "summary": "Update a post",
-          "description": "Updates an existing post",
-          "operationId": "updatePost",
-          "security": [{"BearerAuth": []}],
-          "parameters": [
-            {"name": "id", "in": "path", "required": true, "type": "string"},
-            {"name": "body", "in": "body", "required": true, "schema": {"$ref": "#/definitions/PostUpdate"}}
-          ],
-          "responses": {
-            "200": {
-              "description": "Post updated successfully",
-              "schema": {"$ref": "#/definitions/Post"}
-            },
-            "400": {"description": "Error updating post"},
-            "401": {"description": "Not authorized to update this post"}
-          }
-        },
-        "delete": {
-          "tags": ["Posts"],
-          "summary": "Delete a post",
-          "description": "Deletes an existing post",
-          "operationId": "deletePost",
-          "security": [{"BearerAuth": []}],
-          "parameters": [
-            {"name": "id", "in": "path", "required": true, "type": "string"}
-          ],
-          "responses": {
-            "200": {"description": "Post removed successfully"},
-            "400": {"description": "Error deleting post"},
-            "401": {"description": "Not authorized to delete this post"}
-          }
-        }
-      },
-      "/posts/public": {
-        "get": {
-          "tags": ["Posts"],
-          "summary": "Get all public posts",
-          "description": "Returns a list of public posts",
-          "operationId": "getPublicPosts",
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "schema": {
-                "type": "array",
-                "items": {"$ref": "#/definitions/Post"}
-              }
-            },
-            "400": {"description": "Error fetching posts"}
           }
         }
       }
     },
+    "/users/login": {
+      "post": {
+        "summary": "Authenticate user and get token",
+        "tags": [
+          "Authentication"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User credentials",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCredentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User authenticated successfully",
+            "schema": {
+              "$ref": "#/definitions/AuthUserResponse"
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Register a new user",
+        "tags": [
+          "Authentication"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "New user details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUserRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "schema": {
+              "$ref": "#/definitions/AuthUserResponse"
+            }
+          },
+          "400": {
+            "description": "Email already registered",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "summary": "Get data for an authenticated user",
+        "tags": [
+          "User Profile"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/UserProfileResponse"
+            }
+          },
+          "400": {
+            "description": "User not authorized to view this page",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update data for an authenticated user",
+        "tags": [
+          "User Profile"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Updated user data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUserProfileRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile updated successfully",
+            "schema": {
+              "$ref": "#/definitions/AuthUserResponse"
+            }
+          },
+          "400": {
+            "description": "User not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/posts": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get all the users' posts",
+        "description": "Returns a list of posts created by the user",
+        "operationId": "getPosts",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching posts"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Create a new post",
+        "description": "Creates a new post",
+        "operationId": "createPost",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Post created successfully",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          "400": {
+            "description": "Error creating post"
+          }
+        }
+      }
+    },
+    "/posts/{id}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get details of a single post",
+        "description": "Returns details of a single post",
+        "operationId": "getPostDetails",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          "400": {
+            "description": "Error fetching post"
+          },
+          "401": {
+            "description": "Not authorized to access this post"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Update a post",
+        "description": "Updates an existing post",
+        "operationId": "updatePost",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PostUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post updated successfully",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          },
+          "400": {
+            "description": "Error updating post"
+          },
+          "401": {
+            "description": "Not authorized to update this post"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Delete a post",
+        "description": "Deletes an existing post",
+        "operationId": "deletePost",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post removed successfully"
+          },
+          "400": {
+            "description": "Error deleting post"
+          },
+          "401": {
+            "description": "Not authorized to delete this post"
+          }
+        }
+      }
+    },
+    "/posts/public": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get all public posts",
+        "description": "Returns a list of public posts",
+        "operationId": "getPublicPosts",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching posts"
+          }
+        }
+      }
+    },
+    "/comments/{postid}": {
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Get all comments of a post",
+        "description": "Returns a list of comments for a specific post",
+        "operationId": "getComments",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "postid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Comment"
+              }
+            }
+          },
+          "400": {
+            "description": "Error fetching comments"
+          }
+        }
+      }
+    },
+    "/comments": {
+      "post": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Create a new comment",
+        "description": "Creates a new comment for a post",
+        "operationId": "createComment",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CommentCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Comment created successfully",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          "400": {
+            "description": "Error creating comment"
+          }
+        }
+      }
+    }
+  },
     "definitions": {
       "UserCredentials": {
         "type": "object",
         "properties": {
-          "email": { "type": "string" },
-          "password": { "type": "string" }
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
         }
       },
       "RegisterUserRequest": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "email": { "type": "string" },
-          "password": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
         }
       },
       "AuthUserResponse": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "email": { "type": "string" },
-          "name": { "type": "string" },
-          "isAdmin": { "type": "boolean" },
-          "isConfirmed": { "type": "boolean" },
-          "accessToken": { "type": "string" },
-          "refreshToken": { "type": "string" }
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "isConfirmed": {
+            "type": "boolean"
+          },
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          }
         }
       },
       "UserProfileResponse": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "email": { "type": "string" },
-          "name": { "type": "string" },
-          "isAdmin": { "type": "boolean" }
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          }
         }
       },
       "UpdateUserProfileRequest": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "email": { "type": "string" },
-          "password": { "type": "string" }
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
         }
       },
       "Post": {
         "type": "object",
         "properties": {
-          "_id": {"type": "string"},
-          "title": {"type": "string"},
-          "content": {"type": "string"},
-          "user": {"type": "string"},
-          "isPublic": {"type": "boolean"},
-          "createdAt": {"type": "string"},
-          "updatedAt": {"type": "string"}
+          "_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
         },
-        "required": ["_id", "title", "content", "user", "isPublic", "createdAt", "updatedAt"]
+        "required": [
+          "_id",
+          "title",
+          "content",
+          "user",
+          "isPublic",
+          "createdAt",
+          "updatedAt"
+        ]
       },
       "PostCreate": {
         "type": "object",
         "properties": {
-          "title": {"type": "string"},
-          "content": {"type": "string"},
-          "isPublic": {"type": "boolean"}
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean"
+          }
         },
-        "required": ["title", "content"]
+        "required": [
+          "title",
+          "content"
+        ]
       },
       "PostUpdate": {
         "type": "object",
         "properties": {
-          "title": {"type": "string"},
-          "content": {"type": "string"},
-          "isPublic": {"type": "boolean"}
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "isPublic": {
+            "type": "boolean"
+          }
         }
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "user": {
+            "type": "string"
+          },
+          "post": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "_id",
+          "content",
+          "user",
+          "post",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "CommentCreate": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "post": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "content",
+          "post"
+        ]
       }
     }
-  }
-  
+}
