@@ -1,0 +1,234 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "User Authentication API",
+      "description": "API for user authentication, registration, and profile management"
+    },
+    "basePath": "/api",
+    "schemes": ["http", "https"],
+    "securityDefinitions": {
+      "BearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "paths": {
+      "/users/refresh": {
+        "get": {
+          "summary": "Obtain new access tokens using refresh tokens",
+          "tags": ["Authentication"],
+          "parameters": [
+            {
+              "name": "token",
+              "in": "body",
+              "description": "Refresh token",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": { "type": "string" },
+                  "email": { "type": "string" }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "New access token obtained successfully",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": { "type": "boolean", "example": true },
+                  "accessToken": { "type": "string" }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid refresh token",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": { "type": "boolean", "example": false },
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/login": {
+        "post": {
+          "summary": "Authenticate user and get token",
+          "tags": ["Authentication"],
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "User credentials",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UserCredentials"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User authenticated successfully",
+              "schema": {
+                "$ref": "#/definitions/AuthUserResponse"
+              }
+            },
+            "401": {
+              "description": "Invalid credentials",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users": {
+        "post": {
+          "summary": "Register a new user",
+          "tags": ["Authentication"],
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "New user details",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/RegisterUserRequest"
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "User registered successfully",
+              "schema": {
+                "$ref": "#/definitions/AuthUserResponse"
+              }
+            },
+            "400": {
+              "description": "Email already registered",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/profile": {
+        "get": {
+          "summary": "Get data for an authenticated user",
+          "tags": ["User Profile"],
+          "security": [{ "BearerAuth": [] }],
+          "responses": {
+            "200": {
+              "description": "User profile retrieved successfully",
+              "schema": {
+                "$ref": "#/definitions/UserProfileResponse"
+              }
+            },
+            "400": {
+              "description": "User not authorized to view this page",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "summary": "Update data for an authenticated user",
+          "tags": ["User Profile"],
+          "security": [{ "BearerAuth": [] }],
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "description": "Updated user data",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/UpdateUserProfileRequest"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User profile updated successfully",
+              "schema": {
+                "$ref": "#/definitions/AuthUserResponse"
+              }
+            },
+            "400": {
+              "description": "User not found",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "definitions": {
+      "UserCredentials": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "RegisterUserRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "AuthUserResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "email": { "type": "string" },
+          "name": { "type": "string" },
+          "isAdmin": { "type": "boolean" },
+          "isConfirmed": { "type": "boolean" },
+          "accessToken": { "type": "string" },
+          "refreshToken": { "type": "string" }
+        }
+      },
+      "UserProfileResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "email": { "type": "string" },
+          "name": { "type": "string" },
+          "isAdmin": { "type": "boolean" }
+        }
+      },
+      "UpdateUserProfileRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      }
+    }
+  }
+  
