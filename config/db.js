@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 // connect to the mongoDB collection
 const connectDB = () => {
 	mongoose
-		.connect(process.env.MONGO_URI, {
-		})
+		.connect(process.env.MONGO_URI)
 		.then((res) =>
 			console.log(
 				`MongoDB Connected: ${res.connection.host}`)

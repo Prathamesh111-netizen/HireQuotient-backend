@@ -426,7 +426,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     };
 
     if (updatedUser) {
-      if (!isSocialLogin) {
         const refreshToken = generateToken(updatedUser._id, "refresh");
         const existingToken = await Token.findOne({
           email: updatedUser.email,
@@ -447,7 +446,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
           accessToken: generateToken(updatedUser._id, "access"),
           refreshToken,
         };
-      }
       res.json(updatedUserObj);
     }
   } else {
