@@ -1,0 +1,29 @@
+name: Deployment workflow
+  
+on:
+  push: 
+    branches: 
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+      - run: |
+          curl https://get.okteto.com -sSfL | sh
+          okteto context use https://cloud.okteto.com --token ${{ secrets.OKTETO_TOKEN }}
+      
+          echo "${{ secrets.SERVER_ENV_FILE }}" > .env
+          okteto deploy --build --namespace=${{secrets.OKTETO_HIREQUOTIENT_NAMESPACE }}
+          
+        
+    
+          
+          
+    
+  
+  
