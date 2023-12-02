@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
       "version": "1.0.0",
-      "title": "User Authentication API",
+      "title": "Hire Quotient backend",
       "description": "API for user authentication, registration, and profile management"
     },
     "basePath": "/api",
@@ -182,6 +182,114 @@
             }
           }
         }
+      },
+      "/posts": {
+        "get": {
+          "tags": ["Posts"],
+          "summary": "Get all the users' posts",
+          "description": "Returns a list of posts created by the user",
+          "operationId": "getPosts",
+          "security": [{"BearerAuth": []}],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "array",
+                "items": {"$ref": "#/definitions/Post"}
+              }
+            },
+            "400": {"description": "Error fetching posts"}
+          }
+        },
+        "post": {
+          "tags": ["Posts"],
+          "summary": "Create a new post",
+          "description": "Creates a new post",
+          "operationId": "createPost",
+          "security": [{"BearerAuth": []}],
+          "parameters": [
+            {"name": "body", "in": "body", "required": true, "schema": {"$ref": "#/definitions/PostCreate"}}
+          ],
+          "responses": {
+            "201": {
+              "description": "Post created successfully",
+              "schema": {"$ref": "#/definitions/Post"}
+            },
+            "400": {"description": "Error creating post"}
+          }
+        }
+      },
+      "/posts/{id}": {
+        "get": {
+          "tags": ["Posts"],
+          "summary": "Get details of a single post",
+          "description": "Returns details of a single post",
+          "operationId": "getPostDetails",
+          "security": [{"BearerAuth": []}],
+          "parameters": [
+            {"name": "id", "in": "path", "required": true, "type": "string"}
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {"$ref": "#/definitions/Post"}
+            },
+            "400": {"description": "Error fetching post"},
+            "401": {"description": "Not authorized to access this post"}
+          }
+        },
+        "put": {
+          "tags": ["Posts"],
+          "summary": "Update a post",
+          "description": "Updates an existing post",
+          "operationId": "updatePost",
+          "security": [{"BearerAuth": []}],
+          "parameters": [
+            {"name": "id", "in": "path", "required": true, "type": "string"},
+            {"name": "body", "in": "body", "required": true, "schema": {"$ref": "#/definitions/PostUpdate"}}
+          ],
+          "responses": {
+            "200": {
+              "description": "Post updated successfully",
+              "schema": {"$ref": "#/definitions/Post"}
+            },
+            "400": {"description": "Error updating post"},
+            "401": {"description": "Not authorized to update this post"}
+          }
+        },
+        "delete": {
+          "tags": ["Posts"],
+          "summary": "Delete a post",
+          "description": "Deletes an existing post",
+          "operationId": "deletePost",
+          "security": [{"BearerAuth": []}],
+          "parameters": [
+            {"name": "id", "in": "path", "required": true, "type": "string"}
+          ],
+          "responses": {
+            "200": {"description": "Post removed successfully"},
+            "400": {"description": "Error deleting post"},
+            "401": {"description": "Not authorized to delete this post"}
+          }
+        }
+      },
+      "/posts/public": {
+        "get": {
+          "tags": ["Posts"],
+          "summary": "Get all public posts",
+          "description": "Returns a list of public posts",
+          "operationId": "getPublicPosts",
+          "responses": {
+            "200": {
+              "description": "Successful operation",
+              "schema": {
+                "type": "array",
+                "items": {"$ref": "#/definitions/Post"}
+              }
+            },
+            "400": {"description": "Error fetching posts"}
+          }
+        }
       }
     },
     "definitions": {
@@ -227,6 +335,36 @@
           "name": { "type": "string" },
           "email": { "type": "string" },
           "password": { "type": "string" }
+        }
+      },
+      "Post": {
+        "type": "object",
+        "properties": {
+          "_id": {"type": "string"},
+          "title": {"type": "string"},
+          "content": {"type": "string"},
+          "user": {"type": "string"},
+          "isPublic": {"type": "boolean"},
+          "createdAt": {"type": "string"},
+          "updatedAt": {"type": "string"}
+        },
+        "required": ["_id", "title", "content", "user", "isPublic", "createdAt", "updatedAt"]
+      },
+      "PostCreate": {
+        "type": "object",
+        "properties": {
+          "title": {"type": "string"},
+          "content": {"type": "string"},
+          "isPublic": {"type": "boolean"}
+        },
+        "required": ["title", "content"]
+      },
+      "PostUpdate": {
+        "type": "object",
+        "properties": {
+          "title": {"type": "string"},
+          "content": {"type": "string"},
+          "isPublic": {"type": "boolean"}
         }
       }
     }

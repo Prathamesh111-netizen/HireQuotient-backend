@@ -8,6 +8,7 @@ import swaggerDocument from './swagger.json' assert { type: "json" };
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 import connectDB from "./config/db.js";
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 
 // routes
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 // middleware to act as fallback for all 404 errors
 app.use(notFound);

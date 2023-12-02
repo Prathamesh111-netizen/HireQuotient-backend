@@ -24,8 +24,13 @@ const protectRoute = async (req, res, next) => {
     } catch (error) {
       console.log(error);
       res.status(401);
-      throw new Error("Not authorised. Token failed");
+      res.send("Not authorised. Token failed");
     }
+  }
+  else{
+    console.log(req.headers);
+    res.status(401);
+    res.send("Not authorised. Token failed");
   }
 };
 

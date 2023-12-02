@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const postSchema = new mongoose.Schema({
   title: {
@@ -8,6 +8,10 @@ const postSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
+  },
+  isPublic : {
+    type: Boolean,
+    default: false,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -22,4 +26,4 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model('Post', postSchema);
 
-module.exports = Post;
+export default Post;
