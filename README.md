@@ -4,6 +4,9 @@
 
 Welcome to the documentation for the **Hire Quotient backend API**. This API empowers the Hire Quotient platform with seamless user authentication, registration, and profile management. It also provides functionalities for creating, updating, and deleting posts, along with commenting on posts.
 
+Try the API on deployed Link: https://server-hirequotient-prathamesh111-netizen.cloud.okteto.net/api-docs/ 
+
+Check Youtube Demo: https://youtu.be/WOmhhXmyG3U
 
 ## Getting Started
 
