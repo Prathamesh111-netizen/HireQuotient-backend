@@ -4,6 +4,33 @@
 
 Welcome to the documentation for the **Hire Quotient backend API**. This API empowers the Hire Quotient platform with seamless user authentication, registration, and profile management. It also provides functionalities for creating, updating, and deleting posts, along with commenting on posts.
 
+
+## Getting Started
+
+To use the Hire Quotient backend API, follow these steps:
+
+1. **Create and Update `.env` File:**
+   - Create a `.env` file in the project root.
+   - Update the file with required configurations, including database connection details, secret keys, and other environment variables.
+
+2. **Install Dependencies:**
+   - Run `npm install` to install the necessary dependencies.
+
+3. **Start the API:**
+   - Run `npm start` to start the API locally.
+
+## Docker Compose
+
+To use Docker for deployment, follow these steps:
+
+1. **Update Docker Compose File:**
+   - Update the `docker-compose.yml` file with the required environment variables.
+
+2. **Build and Start Containers:**
+   - Run `docker-compose up --build` to build and start the Docker containers.
+
+The API should now be accessible at the specified port or 5000.
+
 ## Key Features
 
 ### User Authentication and Registration
@@ -58,10 +85,4 @@ Welcome to the documentation for the **Hire Quotient backend API**. This API emp
   - Allow users to express their thoughts by adding comments to posts.
   - Endpoint: `POST /comments`
 
-## How to Use
 
-To interact with the API, make HTTP requests to the provided endpoints using the base URL `/api`. Ensure proper authentication by including the required tokens in the request headers.
-
-For detailed information on request and response formats, refer to the API definitions in the documentation.
-
-Feel free to explore and enhance the user experience on the Hire Quotient platform using these API features!
