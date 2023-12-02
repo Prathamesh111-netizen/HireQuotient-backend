@@ -30,6 +30,10 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.get("/", (req, res) => {
+    res.send("Health check OK");
+});
+
 // routes
 app.use("/api/users", userRoutes);
 
