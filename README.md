@@ -7,7 +7,7 @@ Welcome to the documentation for the **Hire Quotient backend API**. This API emp
 
 Try the API on deployed Link: https://server-hirequotient-prathamesh111-netizen.cloud.okteto.net/api-docs/ 
 
-Check Youtube Demo: https://youtu.be/WOmhhXmyG3U
+Check Youtube Demo: [https://youtu.be/WOmhhXmyG3U](https://youtu.be/XcAL7KPfpYI)
 
 ## Getting Started
 
