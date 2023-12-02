@@ -499,201 +499,204 @@
       }
     }
   },
-    "definitions": {
-      "UserCredentials": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
-      "RegisterUserRequest": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
-      "AuthUserResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isAdmin": {
-            "type": "boolean"
-          },
-          "isConfirmed": {
-            "type": "boolean"
-          },
-          "accessToken": {
-            "type": "string"
-          },
-          "refreshToken": {
-            "type": "string"
-          }
-        }
-      },
-      "UserProfileResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "isAdmin": {
-            "type": "boolean"
-          }
-        }
-      },
-      "UpdateUserProfileRequest": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          }
-        }
-      },
-      "Post": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "user": {
-            "type": "string"
-          },
-          "isPublic": {
-            "type": "boolean"
-          },
-          "createdAt": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string"
-          }
+  "definitions": {
+    "UserCredentials": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
         },
-        "required": [
-          "_id",
-          "title",
-          "content",
-          "user",
-          "isPublic",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "PostCreate": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "isPublic": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "title",
-          "content"
-        ]
-      },
-      "PostUpdate": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "isPublic": {
-            "type": "boolean"
-          }
+        "password": {
+          "type": "string"
         }
-      },
-      "Comment": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "user": {
-            "type": "string"
-          },
-          "post": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string"
-          },
-          "updatedAt": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "_id",
-          "content",
-          "user",
-          "post",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "CommentCreate": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "string"
-          },
-          "post": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "content",
-          "post"
-        ]
       }
+    },
+    "RegisterUserRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "AuthUserResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        },
+        "isConfirmed": {
+          "type": "boolean"
+        },
+        "accessToken": {
+          "type": "string"
+        },
+        "refreshToken": {
+          "type": "string"
+        }
+      }
+    },
+    "UserProfileResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "isAdmin": {
+          "type": "boolean"
+        }
+      }
+    },
+    "UpdateUserProfileRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": false
+        },
+        "email": {
+          "type": "string",
+          "required": false
+        },
+        "password": {
+          "type": "string",
+          "required": false
+        }
+      }
+    },
+    "Post": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id",
+        "title",
+        "content",
+        "user",
+        "isPublic",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "PostCreate": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "title",
+        "content"
+      ]
+    },
+    "PostUpdate": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Comment": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "post": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "_id",
+        "content",
+        "user",
+        "post",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "CommentCreate": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "post": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "content",
+        "post"
+      ]
     }
+  }
 }
